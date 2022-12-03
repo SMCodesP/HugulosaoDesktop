@@ -18,8 +18,48 @@ import {
 } from '@/styles/pages/forgot-password';
 
 import buyerImage from '@/public/buyer.svg';
+import { FormEventHandler, useState } from 'react';
+
+// import fetch from 'node-fetch';
+import { Client, getClient } from '@tauri-apps/api/http';
+
+import { toast } from 'react-toastify';
+import { invoke } from '@tauri-apps/api/tauri';
+import { useRouter } from 'next/router';
 
 const ForgotPassword: NextPage = () => {
+  const [email, setEmail] = useState(``);
+  const router = useRouter();
+
+  const handleSubmitResetPassword: FormEventHandler<
+    HTMLFormElement
+  > = async (e) => {
+    try {
+      console.log(`form submit reset password submit`);
+      e.preventDefault();
+
+      const client = await getClient();
+
+      const response = await client.post<{
+        name?: string;
+      }>(`https://localhost:4000/api/forgot-password`, {
+        type: `Json`,
+        payload: {
+          email,
+        },
+      });
+      if (response.data.name === `NotFoundError`)
+        return toast(`A conta não foi encontrada.`);
+
+      router.push(`/forgot-password/wait`);
+      toast(`Verifique as mensagens de seu e-mai.`);
+      // invoke(`forgot_password`, { email });
+      // console.log(fetch);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Container>
       <ForgotForm>
@@ -28,7 +68,9 @@ const ForgotPassword: NextPage = () => {
           Solicite a redefinição de senha
         </ForgotSubTitle>
         <ForgotTitle>Esqueceu sua senha?</ForgotTitle>
-        <FormForgotBody>
+        <FormForgotBody
+          onSubmit={handleSubmitResetPassword}
+        >
           <GroupInputForgot>
             <LabelInputForgot htmlFor="email">
               E-mail
@@ -38,9 +80,11 @@ const ForgotPassword: NextPage = () => {
               name="email"
               id="email"
               placeholder="Digite seu e-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </GroupInputForgot>
-          <ButtonSubmitForgot>
+          <ButtonSubmitForgot type="submit">
             Redefinir senha
           </ButtonSubmitForgot>
           <Link href="/login">

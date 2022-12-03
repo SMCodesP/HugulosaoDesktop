@@ -1,8 +1,4 @@
-import {
-  FormEventHandler,
-  useEffect,
-  useState,
-} from 'react';
+import { FormEventHandler, useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -40,7 +36,7 @@ const ForgotPasswordReset: React.FC = () => {
     event.preventDefault();
 
     if (password !== confirmPassword)
-      toast(`As senhas devem ser iguais.`);
+      return toast(`As senhas devem ser iguais.`);
 
     router.push(`/login`);
     toast(`Senha alterada com sucesso!`);

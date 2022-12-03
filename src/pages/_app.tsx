@@ -14,6 +14,7 @@ import { dark } from '@/themes/dark';
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
+import AuthProvider from '@/contexts/auth';
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
@@ -40,7 +41,9 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   return (
     <ThemeProvider theme={dark}>
-      <Component {...pageProps} />
+      <AuthProvider>
+        <Component {...pageProps} />
+      </AuthProvider>
 
       <ToastContainer
         theme="dark"
