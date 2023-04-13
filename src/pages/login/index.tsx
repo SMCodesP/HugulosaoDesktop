@@ -2,7 +2,12 @@ import type { NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { useCallback, useState } from 'react';
+import {
+  FormEventHandler,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
 import { useAuth } from '@/contexts/auth';
 
@@ -22,14 +27,24 @@ import {
 } from '@/styles/pages/login';
 
 import buyerImage from '@/public/buyer.svg';
+import { useRouter } from 'next/router';
 
 const Login: NextPage = () => {
   const [email, setEmail] = useState(``);
   const [password, setPassword] = useState(``);
 
-  const { signIn } = useAuth();
+  const { signIn, accessToken, isLoaded } = useAuth();
+  const router = useRouter();
 
-  const onSubmitLogin = useCallback(
+  useEffect(() => {
+    if (isLoaded && accessToken) {
+      router.push(`/`);
+    }
+  }, [router, accessToken, isLoaded]);
+
+  const onSubmitLogin = useCallback<
+    FormEventHandler<HTMLDivElement>
+  >(
     async (event) => {
       event.preventDefault();
       await signIn({
@@ -39,6 +54,10 @@ const Login: NextPage = () => {
     },
     [signIn, email, password],
   );
+
+  if (!isLoaded || accessToken) {
+    return <div />;
+  }
 
   return (
     <Container>

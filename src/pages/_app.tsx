@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { listen } from '@tauri-apps/api/event';
 
 import { ThemeProvider } from 'styled-components';
+import { ModalProvider } from 'styled-react-modal';
 
 import { GlobalStyles } from '@/styles/GlobalStyles';
 
@@ -13,8 +14,9 @@ import { dark } from '@/themes/dark';
 
 import { ToastContainer, toast } from 'react-toastify';
 
-import 'react-toastify/dist/ReactToastify.css';
 import AuthProvider from '@/contexts/auth';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
@@ -41,9 +43,11 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   return (
     <ThemeProvider theme={dark}>
-      <AuthProvider>
-        <Component {...pageProps} />
-      </AuthProvider>
+      <ModalProvider>
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
+      </ModalProvider>
 
       <ToastContainer
         theme="dark"

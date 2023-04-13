@@ -11,12 +11,20 @@ export const GlobalStyles = createGlobalStyle`
 
   html,
   body {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     line-height: 1.6;
     font-size: 18px;
     background: ${({ theme }) => theme.background};
     color: ${({ theme }) => theme.foreground};
     font-family: 'Roboto', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  }
+
+  #__next {
+    padding-left: 92px;
   }
 
   input,

@@ -1,9 +1,22 @@
 import axios from 'axios';
-import axiosTauriAdapter from 'axios-tauri-adapter';
+// import axiosTauriApiAdapter from 'axios-tauri-api-adapter';
+// import dynamic from 'next/dynamic';
+// const axios = dynamic(() => import(`axios`), {
+//   ssr: false,
+// });
+// const axiosTauriApiAdapter = dynamic(
+//   () => import(`axios-tauri-api-adapter`),
+//   { ssr: false },
+// );
 
-const api = axios.create({
-  baseURL: `http://localhost:3000`,
-  adapter: axiosTauriAdapter,
-});
+// console.log(axios.create);
 
-export default api;
+// const api =
+//   axios &&
+//   axios.create &&
+//   axios.create({
+//     baseURL: `http://localhost:4000`,
+//     adapter: axiosTauriApiAdapter,
+//   });
+
+export const api = axios.create();
